@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ContentFilters</key>
+	<dict/>
+	<key>auto_connect</key>
+	<true/>
+	<key>data</key>
+	<dict>
+		<key>connection</key>
+		<dict>
+			<key>allowDataLocalInfile</key>
+			<integer>0</integer>
+			<key>database</key>
+			<string>CalWeather</string>
+			<key>enableClearTextPlugin</key>
+			<integer>0</integer>
+			<key>host</key>
+			<string>localhost</string>
+			<key>name</key>
+			<string>root@localhost</string>
+			<key>rdbms_type</key>
+			<string>mysql</string>
+			<key>sslCACertFileLocation</key>
+			<string></string>
+			<key>sslCACertFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslCertificateFileLocation</key>
+			<string></string>
+			<key>sslCertificateFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslKeyFileLocation</key>
+			<string></string>
+			<key>sslKeyFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>type</key>
+			<string>SPTCPIPConnection</string>
+			<key>useSSL</key>
+			<integer>0</integer>
+			<key>user</key>
+			<string>root</string>
+		</dict>
+		<key>session</key>
+		<dict>
+			<key>connectionEncoding</key>
+			<string>utf8mb4</string>
+			<key>contentFilterV2</key>
+			<dict>
+				<key>children</key>
+				<array/>
+				<key>filterClass</key>
+				<string>groupNode</string>
+				<key>isConjunction</key>
+				<true/>
+			</dict>
+			<key>contentPageNumber</key>
+			<integer>1</integer>
+			<key>contentSelection</key>
+			<data>
+			YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0
+			b3BYJG9iamVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRk
+			YXRhgAGoCwwXGBkaHiVVJG51bGzTDQ4PEBMWV05TLmtleXNaTlMu
+			b2JqZWN0c1YkY2xhc3OiERKAAoADohQVgASABYAHVHR5cGVUcm93
+			c18QHVNlbGVjdGlvbkRldGFpbFR5cGVOU0luZGV4U2V00hsPHB1c
+			TlNSYW5nZUNvdW50EACABtIfICEiWiRjbGFzc25hbWVYJGNsYXNz
+			ZXNaTlNJbmRleFNldKIjJFpOU0luZGV4U2V0WE5TT2JqZWN00h8g
+			JidcTlNEaWN0aW9uYXJ5oiYkAAgAEQAaACQAKQAyADcASQBMAFEA
+			UwBcAGIAaQBxAHwAgwCGAIgAigCNAI8AkQCTAJgAnQC9AMIAzwDR
+			ANMA2ADjAOwA9wD6AQUBDgETASAAAAAAAAACAQAAAAAAAAAoAAAA
+			AAAAAAAAAAAAAAABIw==
+			</data>
+			<key>contentSortColIsAsc</key>
+			<true/>
+			<key>contentViewport</key>
+			<string>{{0, 0}, {1189, 793}}</string>
+			<key>isToolbarVisible</key>
+			<true/>
+			<key>queries</key>
+			<string>
+-- Total Acres burned and how many Distinct fires per year and how long fire season was. Use the location VIEW to determine DATEDIFF.
+
+
+CREATE VIEW Fire_Season_Length AS
+SELECT DISTINCT '2014' AS 'Year', COUNT(incident_name) AS Total_Fires, DATEDIFF(MAX(date),MIN(date)) AS Length_of_Fire_Season, SUM(acres_burned) AS Total_Acres_Burned
+FROM location2014
+	UNION
+SELECT DISTINCT '2015' AS 'Year', COUNT(incident_name) AS Total_Fires, DATEDIFF(MAX(date),MIN(date)) AS Length_of_Fire_Season, SUM(acres_burned) AS Total_Acres_Burned
+FROM location2015	
+	UNION
+SELECT DISTINCT '2016' AS 'Year', COUNT(incident_name) AS Total_Fires, DATEDIFF(MAX(date),MIN(date)) AS Length_of_Fire_Season, SUM(acres_burned) AS Total_Acres_Burned
+FROM location2016
+	UNION
+SELECT DISTINCT '2017' AS 'Year', COUNT(incident_name) AS Total_Fires, DATEDIFF(MAX(date),MIN(date)) AS Length_of_Fire_Season, SUM(acres_burned) AS Total_Acres_Burned
+FROM location2017
+	UNION
+SELECT DISTINCT '2018' AS 'Year', COUNT(incident_name) AS Total_Fires, DATEDIFF(MAX(date),MIN(date)) AS Length_of_Fire_Season, SUM(acres_burned) AS Total_Acres_Burned
+FROM location2018
+	UNION
+SELECT DISTINCT '2019' AS 'Year', COUNT(incident_name) AS Total_Fires, DATEDIFF(MAX(date),MIN(date)) AS Length_of_Fire_Season, SUM(acres_burned) AS Total_Acres_Burned
+FROM location2019
+	UNION
+SELECT DISTINCT '2020' AS 'Year',COUNT(incident_name) AS Total_Fires, DATEDIFF(MAX(date),MIN(date)) AS Length_of_Fire_Season, SUM(acres_burned) AS Total_Acres_Burned
+FROM location2020
+
+
+
+SELECT DATEDIFF(MAX(date), MIN(date))
+FROM location2015
+
+SELECT DATEDIFF(MAX(date), MIN(date))
+FROM location2016
+
+SELECT DATEDIFF(MAX(date), MIN(date))
+FROM location2017
+
+
+SELECT *
+FROM location2017
+
+
+
+	UNION
+SELECT fd.incident_name,  c19.date, SUMfd.acres_burned)
+FROM FireData AS fd 
+JOIN Cal2019 AS c19 ON c19.Name= fd.incident_name AND c19.date=fd.incident_date_created
+	UNION
+SELECT fd.incident_name,  c18.date, SUM(fd.acres_burned)
+FROM FireData AS fd 
+JOIN Cal2018 AS c18 ON c18.Name= fd.incident_name AND c18.date=fd.incident_date_created
+	UNION
+SELECT fd.incident_name,  c17.date, SUM(fd.acres_burned)
+FROM FireData AS fd 
+JOIN Cal2017 AS c17 ON c17.Name= fd.incident_name AND c17.date=fd.incident_date_created
+	UNION
+SELECT fd.incident_name,  c16.date, SUM(fd.acres_burned)
+FROM FireData AS fd 
+JOIN Cal2016 AS c16 ON c16.Name= fd.incident_name AND c16.date=fd.incident_date_created
+	UNION
+SELECT fd.incident_name,  c15.date, SUM(fd.acres_burned)
+FROM FireData AS fd 
+JOIN Cal2015 AS c15 ON c15.Name= fd.incident_name AND c15.date=fd.incident_date_created
+	UNION
+SELECT fd.incident_name,  c14.date, SUM(fd.acres_burned) 
+FROM FireData AS fd 
+JOIN Cal2014 AS c14 ON c14.Name= fd.incident_name AND c14.date=fd.incident_date_created
+ORDER BY date ASC
+
+
+
+
+-- Show the total acres burned by each fire, for each year, and list each date. Use a rolling sum to show total amount of acres burned for the year
+
+
+							  -- 2020-- 
+							  
+-- CREATE View Season2020 AS 							  
+SELECT fd.incident_name,  c20.date, fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2020 AS c20 ON c20.Name= fd.incident_name AND c20.date=fd.incident_date_created
+
+
+							  -- 2019--
+							  
+-- CREATE View Season2019 AS 							  
+SELECT fd.incident_name,  c19.date, fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2019 AS c19 ON c19.Name= fd.incident_name AND c19.date=fd.incident_date_created
+	
+	
+	
+									-- 2018--
+									
+-- CREATE View Season2018 AS 							  								 
+SELECT fd.incident_name,  c18.date, fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2018 AS c18 ON c18.Name= fd.incident_name AND c18.date=fd.incident_date_created
+	
+	
+									-- 2017-- 
+									
+-- CREATE View Season2017 AS 
+SELECT fd.incident_name,  c17.date, fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2017 AS c17 ON c17.Name= fd.incident_name AND c17.date=fd.incident_date_created
+	
+	
+									-- 2016--
+									
+									
+-- CREATE View Season2016 AS 
+SELECT fd.incident_name,  c16.date, fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2016 AS c16 ON c16.Name= fd.incident_name AND c16.date=fd.incident_date_created
+
+						      -- 2015--
+						      
+-- CREATE View Season2015 AS 
+SELECT fd.incident_name,  c15.date, fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2015 AS c15 ON c15.Name= fd.incident_name AND c15.date=fd.incident_date_created
+	
+						
+									-- 2014--
+
+-- CREATE View Season2014 AS
+SELECT fd.incident_name,  c14.date, fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2014 AS c14 ON c14.Name= fd.incident_name AND c14.date=fd.incident_date_created
+ORDER BY date ASC
+
+
+
+-- Determine where each fire was located, and how many acres were burned. Include latitude, longitude and counties and the agencies that responded to the fire. 
+
+
+							-- 2020-- 
+				
+-- CREATE VIEW Location2020 AS				
+SELECT fd.incident_name,  c20.date, fd.incident_county, fd.longitude, fd.latitude,  fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2020 AS c20 ON c20.Name= fd.incident_name AND c20.date=fd.incident_date_created 
+
+
+
+							-- 2019-- 
+CREATE VIEW Location2019 AS
+SELECT fd.incident_name,  c19.date, fd.incident_county, fd.longitude, fd.latitude,  fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2019 AS c19 ON c19.Name= fd.incident_name AND c19.date=fd.incident_date_created
+
+
+
+							-- 2018--
+							
+-- CREATE VIEW Location2018 AS
+SELECT fd.incident_name,  c18.date, fd.incident_county, fd.longitude, fd.latitude,  fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2018 AS c18 ON c18.Name= fd.incident_name AND c18.date=fd.incident_date_created
+	
+
+
+							-- 2017-- 
+							
+						
+-- CREATE VIEW Location2017 AS
+SELECT fd.incident_name,  c17.date, fd.incident_county, fd.longitude, fd.latitude,  fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2017 AS c17 ON c17.Name= fd.incident_name AND c17.date=fd.incident_date_created
+
+
+
+							-- 2016-- 
+							
+-- CREATE VIEW Location2016 AS							
+SELECT fd.incident_name,  c16.date, fd.incident_county, fd.longitude, fd.latitude,  fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2016 AS c16 ON c16.Name= fd.incident_name AND c16.date=fd.incident_date_created
+			
+							
+							
+							     -- 2015-- 
+							     
+-- CREATE VIEW Location2015 AS							     
+SELECT fd.incident_name,  c15.date, fd.incident_county, fd.longitude, fd.latitude,  fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2015 AS c15 ON c15.Name= fd.incident_name AND c15.date=fd.incident_date_created
+	
+							     
+							     
+							     
+							     -- 2014-- 
+							     
+-- CREATE VIEW Location2014 AS							     
+SELECT fd.incident_name,  c14.date, fd.incident_county, fd.longitude, fd.latitude,  fd.acres_burned, SUM(acres_burned) OVER (ORDER BY date) AS Total_Acres_Burned
+FROM FireData AS fd 
+JOIN Cal2014 AS c14 ON c14.Name= fd.incident_name AND c14.date=fd.incident_date_created
+ORDER BY date ASC
+    
+							     
+   		------ Rank the counties with the most amount of fires for each season-------
+
+							-- 2014--
+WITH incident_cte AS (
+SELECT incident_county, SUM(acres_burned) AS Acres_Burned
+FROM location2014
+GROUP BY incident_county)
+SELECT incident_county, Acres_Burned, RANK()OVER(ORDER BY Acres_Burned Desc) AS CountyRanking
+FROM incident_cte
+
+				
+								  -- 2015-- 
+WITH incident_cte AS (
+SELECT incident_county, SUM(acres_burned) AS Acres_Burned
+FROM location2015
+WHERE incident_county!= ''
+GROUP BY incident_county)
+SELECT incident_county, Acres_Burned, RANK()OVER(ORDER BY Acres_Burned Desc) AS CountyRanking
+FROM incident_cte
+
+								  
+							-- 2016--
+WITH incident_cte AS (
+SELECT incident_county, SUM(acres_burned) AS Acres_Burned
+FROM location2016
+GROUP BY incident_county)
+SELECT incident_county, Acres_Burned, RANK()OVER(ORDER BY Acres_Burned Desc) AS CountyRanking
+FROM incident_cte
+
+
+							-- 2017--
+							
+WITH incident_cte AS (
+SELECT incident_county, SUM(acres_burned) AS Acres_Burned
+FROM location2017
+WHERE incident_county!=''
+GROUP BY incident_county)
+SELECT incident_county, Acres_Burned, RANK()OVER(ORDER BY Acres_Burned Desc) AS CountyRanking
+FROM incident_cte
+
+
+							-- 2018--
+							
+WITH incident_cte AS (
+SELECT incident_county, SUM(acres_burned) AS Acres_Burned
+FROM location2018
+WHERE incident_county!=''
+GROUP BY incident_county)
+SELECT incident_county, Acres_Burned, RANK()OVER(ORDER BY Acres_Burned Desc) AS CountyRanking
+FROM incident_cte
+
+								 -- 2019--
+								 
+WITH incident_cte AS (
+SELECT incident_county, SUM(acres_burned) AS Acres_Burned
+FROM location2019
+GROUP BY incident_county)
+SELECT incident_county, Acres_Burned, RANK()OVER(ORDER BY Acres_Burned Desc) AS CountyRanking
+FROM incident_cte
+
+
+							-- 2020--
+							
+WITH incident_cte AS (
+SELECT incident_county, SUM(acres_burned) AS Acres_Burned
+FROM location2020
+GROUP BY incident_county)
+SELECT incident_county, Acres_Burned, RANK()OVER(ORDER BY Acres_Burned Desc) AS CountyRanking
+FROM incident_cte
+
+
+
+-- create temp table of all the county rankings to find out which counties had the most amount of total acreage burned from 2014-2015 and their average rankings 
+
+
+
+CREATE TEMPORARY TABLE county_rankings_per_year
+SELECT '2014' AS 'Year',incident_county, SUM(acres_burned) AS Total_Acres_Burned, RANK() OVER(ORDER BY SUM(acres_burned)DESC) AS County_Ranking
+FROM FireData
+WHERE incident_date_created LIKE '2014%'
+GROUP BY incident_county
+	UNION 
+SELECT '2015' AS 'Year',incident_county, SUM(acres_burned) AS Total_Acres_Burned, RANK() OVER(ORDER BY SUM(acres_burned)DESC) AS County_Ranking
+FROM FireData
+WHERE incident_date_created LIKE '2015%'
+GROUP BY incident_county
+	UNION
+SELECT '2016' AS 'Year',incident_county, SUM(acres_burned) AS Total_Acres_Burned, RANK() OVER(ORDER BY SUM(acres_burned)DESC) AS County_Ranking
+FROM FireData
+WHERE incident_date_created LIKE '2016%'
+GROUP BY incident_county
+	UNION
+SELECT '2017' AS 'Year',incident_county, SUM(acres_burned) AS Total_Acres_Burned, RANK() OVER(ORDER BY SUM(acres_burned)DESC) AS County_Ranking
+FROM FireData
+WHERE incident_date_created LIKE '2017%' AND incident_county!=''
+GROUP BY incident_county
+	UNION
+SELECT '2018' AS 'Year',incident_county, SUM(acres_burned) AS Total_Acres_Burned, RANK() OVER(ORDER BY SUM(acres_burned)DESC) AS County_Ranking
+FROM FireData
+WHERE incident_date_created LIKE '2018%' AND incident_county!= ''
+GROUP BY incident_county
+	UNION
+SELECT '2019' AS 'Year',incident_county, SUM(acres_burned) AS Total_Acres_Burned, RANK() OVER(ORDER BY SUM(acres_burned)DESC) AS County_Ranking
+FROM FireData
+WHERE incident_date_created LIKE '2019%'
+GROUP BY incident_county
+	UNION
+SELECT '2020' AS 'Year',incident_county, SUM(acres_burned) AS Total_Acres_Burned, RANK() OVER(ORDER BY SUM(acres_burned)DESC) AS County_Ranking
+FROM FireData
+WHERE incident_date_created LIKE '2020%'
+GROUP BY incident_county	
+	
+
+SELECT incident_county AS incident_area, SUM(Total_Acres_Burned) AS Total_Acres_Burned_2014_to_2020, RANK()OVER(ORDER BY SUM(Total_Acres_Burned)DESC) AS incident_county_Ranking
+ FROM county_rankings_per_year
+ WHERE incident_county!='' 
+GROUP BY incident_county</string>
+			<key>table</key>
+			<string>season2019</string>
+			<key>view</key>
+			<string>SP_VIEW_CUSTOMQUERY</string>
+			<key>windowVerticalDividerPosition</key>
+			<real>250</real>
+		</dict>
+	</dict>
+	<key>encrypted</key>
+	<false/>
+	<key>format</key>
+	<string>connection</string>
+	<key>queryFavorites</key>
+	<array/>
+	<key>rdbms_type</key>
+	<string>mysql</string>
+	<key>rdbms_version</key>
+	<string>8.0.32</string>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>
